@@ -32,24 +32,29 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        //
+        return view('welcome', compact('product'));
     }
 
-
-    public function edit(Product $product)
-    {
-        //
-    }
 
 
     public function update(Request $request, Product $product)
     {
-        //
+        if(auth()->user()->admin == 1){
+
+            $this->validate($request, [
+                'article' => 'required|max:10',
+                'name' => 'required|regex:/^[a-zA-Z]+$/u|unique:products'
+            ]);
+
+            Product::update($request->all());
+            return back();
+        }
     }
 
 
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return back();
     }
 }
