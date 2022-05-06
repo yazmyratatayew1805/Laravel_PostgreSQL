@@ -78,14 +78,26 @@
     <div id="myModal" class="modal">
             <span class="close"><img src="{{asset('img/Close_round.svg')}}" alt="close"></span>
 
-        <span class="modal__text">Добавить продукт</span>
+        <span class="modal__text">
+            @isset($product)
+                Изменить продукт  <b>{{ $product->name }}</b>
+            @else
+                Добавить продукт
+            @endisset
+                </span>
 
-        <form class="modal__form" action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+        <form class="modal__form" method="POST" enctype="multipart/form-data"
+              @isset($product)
+              action="{{ route('products.update', $product) }}"
+              @else
+              action="{{ route('products.store') }}"
+              @endisset
+              >
             @csrf
         <h6 class="modal__label">Артикул</h6>
-        <input type="text" class="modal__input" name="article">
+        <input type="text" class="modal__input" name="article" value="@isset($product){{ $product->article }}@endisset">
         <h6 class="modal__label">Название</h6>
-        <input type="text" class="modal__input" name="name">
+        <input type="text" class="modal__input" name="name" value="@isset($product){{ $product->article }}@endisset">
         <h6 class="modal__label">Статус</h6>
 
             <select class="modal__input" name="status">
